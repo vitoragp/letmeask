@@ -1,5 +1,15 @@
 import * as React from "react";
 
-describe("Application tests", function () {
-  it("Test application initialization", function () {});
+import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
+
+import { App } from "../src/App";
+
+describe("Application", function () {
+  it("Test initialization", function () {
+    render(<App />);
+
+    expect(screen.getByText("Letmeask!")).toBeInTheDocument();
+  });
 });

@@ -6,8 +6,6 @@ import "./styles.scss";
  * App
  */
 
-export default function App() {
-  return (
-    <div>Letmeask!</div>
-  );
+export function App() {
+  return <div>Letmeask!</div>;
 }
