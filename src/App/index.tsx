@@ -1,5 +1,14 @@
 import * as React from "react";
 
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import { AuthContextProvider } from "../contexts/AuthContext";
+import { NotificationContextProvider } from "../contexts/NotificationContext";
+
+import { Home } from "../pages/Home";
+import { RoomNew } from "../pages/RoomNew";
+import { RoomView } from "../pages/RoomView";
+
 import "./styles.scss";
 
 /***
@@ -7,5 +16,17 @@ import "./styles.scss";
  */
 
 export function App() {
-  return <div>Letmeask!</div>;
+  return (
+    <AuthContextProvider>
+      <NotificationContextProvider>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" component={Home} exact />
+            <Route path="/room/new" component={RoomNew} />
+            <Route path="/room/view" component={RoomView} />
+          </Switch>
+        </BrowserRouter>
+      </NotificationContextProvider>
+    </AuthContextProvider>
+  );
 }

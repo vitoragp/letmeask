@@ -1,0 +1,39 @@
+@import "../../constants/styles.scss";
+
+.room-new__page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  > .left-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-color: $purple;
+    flex: 6;
+
+    > img {
+      width: 16rem;
+      margin: 0.5rem 8rem 0.5rem 4rem;
+    }
+
+    > h1 {
+      color: $white;
+      font-size: 42px;
+      margin: 0.5rem 8rem 0.5rem 4rem;
+    }
+
+    > p {
+      color: $greyMedium;
+      font-size: 20px;
+      margin: 0.5rem 8rem 8rem 4rem;
+    }
+  }
+
+  > .right-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 7;
+  }
+}
