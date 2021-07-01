@@ -9,5 +9,5 @@
     "esModuleInterop": true
   },
   "include": ["src/**/*", "tests/**/*"],
-  "exclude": []
+  "exclude": ["tests/**/*"]
 }
