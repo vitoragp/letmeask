@@ -1,6 +1,0 @@
-# ignore folders
-node_modules/
-
-# ignore files
-.env.local
-yarn.lock
