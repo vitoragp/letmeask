@@ -8,7 +8,6 @@ import { createBrowserHistory } from "history";
 import { Router } from "react-router-dom";
 
 import { App } from "../src/App";
-import { act } from "react-dom/test-utils";
 
 describe("Application route: Home", function () {
   let history: any;
