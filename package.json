@@ -6,7 +6,7 @@
   "scripts": {
     "build": "",
     "watch": ".\\node_modules\\.bin\\webpack-cli serve --config ./webpack.config.js --mode development --open --hot",
-    "test": "jest --env=jsdom"
+    "test": "jest --env=jsdom --updateSnapshot"
   },
   "author": "",
   "license": "ISC",

@@ -1,8 +1,10 @@
 # ignore folders
 node_modules/
+tests/__snapshots__/
 
 # ignore files
 .env.local
+.firebaserc
 .gitignore
 
 yarn.lock

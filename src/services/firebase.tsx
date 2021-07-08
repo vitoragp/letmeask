@@ -30,14 +30,4 @@ firebase.initializeApp(configFirebase);
 const auth = firebase.auth();
 const database = firebase.database();
 
-/***
- * Configura emuladores.
- */
-
-// eslint-disable-next-line no-restricted-globals
-if (location.hostname === "localhost") {
-  auth.useEmulator("http://localhost:9099");
-  database.useEmulator("http://localhost", 9000);
-}
-
 export { firebase, auth, database };

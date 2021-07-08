@@ -2,12 +2,15 @@ import * as React from "react";
 
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import { createBrowserHistory } from "history";
 import { Router } from "react-router-dom";
 
-import { App } from "../src/App";
+import { auth, firebase } from "../../src/services/firebase";
+
+import { App } from "../../src/App";
+import { act } from "react-dom/test-utils";
 
 describe("Application route: RoomNew", function () {
   let history: any;
@@ -29,7 +32,17 @@ describe("Application route: RoomNew", function () {
    * Testes
    */
 
-  it("Rendering", function () {
+  it("Unauthenticated access", function () {
+    const { container } = render(
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+
+    expect(container.firstChild).toHaveClass("home__page");
+  });
+
+  it("Authenticated access", function () {
     const { container } = render(
       <Router history={history}>
         <App />

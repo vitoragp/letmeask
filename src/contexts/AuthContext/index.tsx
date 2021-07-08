@@ -60,7 +60,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
    */
 
   async function signWithGoogle() {
-    const provider = new firebase.auth.GithubAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
     const response = await auth.signInWithPopup(provider);
 

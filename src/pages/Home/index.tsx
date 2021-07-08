@@ -6,20 +6,26 @@ import { Button } from "../../components/Button";
 import * as Res from "../../assets/Resources";
 
 import "./styles.scss";
+import { useHistory } from "react-router-dom";
+import { useAuth } from "../../hooks/Auth";
 
 /***
  * Home
  */
 
 export function Home() {
-  const [roomCode, setRoomCode] = React.useState<string>("");
+  const history = useHistory();
+  const auth = useAuth();
+
+  const [roomCode, setRoomCode] = React.useState<string>();
 
   /***
    * handleGoogleSignIn
    */
 
-  function handleGoogleSignIn() {
-    // TODO: Implementar autenticacao pelo google.
+  async function handleGoogleSignIn() {
+    await auth.signWithGoogle();
+    history.push("/room/new");
   }
 
   /***

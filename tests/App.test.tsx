@@ -2,14 +2,14 @@ import * as React from "react";
 
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import { createBrowserHistory } from "history";
 import { Router } from "react-router-dom";
 
 import { App } from "../src/App";
 
-describe("Application route: RoomView", function () {
+describe("Application route: Home", function () {
   let history: any;
 
   /***
@@ -18,7 +18,7 @@ describe("Application route: RoomView", function () {
 
   beforeEach(() => {
     history = createBrowserHistory();
-    history.push("/room/view");
+    history.push("/");
   });
 
   afterEach(() => {
@@ -36,6 +36,6 @@ describe("Application route: RoomView", function () {
       </Router>
     );
 
-    expect(container.firstChild).toHaveClass("room-view__page");
+    expect(container.firstChild).toHaveClass("home__page");
   });
 });
