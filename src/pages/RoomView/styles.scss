@@ -7,8 +7,11 @@
   height: 100%;
 
   > header {
+    display: flex;
     padding: 0.75rem 12rem;
     border-bottom: 1px solid $greyLight;
+    justify-content: space-between;
+    align-items: center;
 
     > img {
       width: 6rem;

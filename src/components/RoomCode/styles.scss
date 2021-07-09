@@ -1,0 +1,31 @@
+@import "../../constants/styles.scss";
+
+.room-code__component {
+  display: flex;
+  align-items: center;
+  border: 1px solid $purple;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  > .icon {
+    background-color: $purple;
+    padding: 0.5rem;
+    border-top-left-radius: 0.4rem;
+    border-bottom-left-radius: 0.4rem;
+  }
+
+  > .text {
+    padding: 0 0.5rem;
+    background-color: $white;
+  }
+
+  > .hidden {
+    position: absolute;
+    z-index: -9999;
+
+    > input {
+      outline: none;
+      border: none;
+    }
+  }
+}

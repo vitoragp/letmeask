@@ -23,8 +23,8 @@ export function App() {
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/room/new" component={RoomNew} />
-            <Route path="/room/:id" children={<RoomView />} />
-            <Route path="/room/admin/:id" children={<RoomView admin />} />
+            <Route path="/room/:id" children={<RoomView />} exact />
+            <Route path="/room/admin/:id" children={<RoomView admin />} exact />
           </Switch>
         </BrowserRouter>
       </NotificationContextProvider>

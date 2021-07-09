@@ -1,7 +1,9 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 import * as Res from "../../assets/Resources";
+import { Loading } from "../../components/Loading";
+import { RoomCode } from "../../components/RoomCode";
 import { RoomRepository } from "../../repositories/RoomRepository";
 
 import "./styles.scss";
@@ -28,20 +30,36 @@ type RoomViewParams = {
 
 export function RoomView(props: RoomViewProps) {
   const params = useParams<RoomViewParams>();
+  const history = useHistory();
+
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    const repository = new RoomRepository();
+    if (params.id) {
+      const repository = new RoomRepository();
 
-    repository.get(params.id).then((room) => {});
-  });
+      repository.get(params.id).then((room) => {
+        if (!room) {
+          history.replace("/");
+        }
+        setLoading(false);
+      });
+    } else {
+      history.replace("/");
+    }
+  }, [params.id]);
 
   return (
     <div className="room-view__page">
       <header>
         <img src={Res.LogoSvg} alt="Letmeask" />
+        <RoomCode code={params.id} />
       </header>
+
       <section>
-        <p>teste</p>
+        <Loading state={loading}>
+          <div>Content</div>
+        </Loading>
       </section>
     </div>
   );

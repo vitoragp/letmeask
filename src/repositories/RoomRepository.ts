@@ -35,6 +35,8 @@ export class RoomRepository implements RepositoryBase<Room> {
               active: response.child("active").val(),
               questions: questions,
             });
+          } else {
+            resolve(null);
           }
         });
     });
@@ -72,6 +74,8 @@ export class RoomRepository implements RepositoryBase<Room> {
             });
 
             resolve(rooms);
+          } else {
+            resolve(null);
           }
         });
     });
