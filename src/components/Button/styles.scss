@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 0.75rem 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
 
@@ -33,13 +33,26 @@
     }
   }
 
-  &.tertiary {
-    background-color: $red;
-    color: $white;
+  &.quaternary {
+    background-color: $white;
+    color: $purple;
+    border: 1px solid $purple;
 
     &:hover,
     &:active {
-      background-color: $hoverRed;
+      background-color: $white;
+      color: $hoverPurple;
+      border: 1px solid $hoverPurple;
+    }
+  }
+
+  &.secondary {
+    background-color: $greyLight;
+    color: $greyText;
+
+    &:hover,
+    &:active {
+      background-color: $greyMedium;
     }
   }
 

@@ -16,10 +16,53 @@
     > img {
       width: 6rem;
     }
+
+    > .left-menu {
+      display: flex;
+      flex-direction: row;
+    }
   }
 
   > section {
+    display: flex;
+    padding: 0 25rem;
+    flex-direction: column;
     flex: 1;
-    padding: 0 12rem;
+
+    > h1 {
+      margin-top: 4rem;
+    }
+
+    > .content {
+      flex: 1;
+
+      > .empty-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+
+        > div {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+
+          > img {
+            width: 10rem;
+          }
+
+          > h1 {
+            margin-top: 2rem;
+          }
+
+          > p {
+            margin-top: 1rem;
+            color: $greyText;
+            text-align: center;
+          }
+        }
+      }
+    }
   }
 }

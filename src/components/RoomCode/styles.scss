@@ -5,13 +5,14 @@
   align-items: center;
   border: 1px solid $purple;
   border-radius: 0.5rem;
+  margin: 0 0.35rem;
   cursor: pointer;
 
   > .icon {
     background-color: $purple;
-    padding: 0.5rem;
+    padding: 0.65rem;
     border-top-left-radius: 0.4rem;
-    border-bottom-left-radius: 0.4rem;
+    border-bottom-left-radius: 0.4em;
   }
 
   > .text {
