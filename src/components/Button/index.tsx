@@ -9,6 +9,7 @@ import "./styles.scss";
 type ButtonProps = {
   label?: string;
   className?: string;
+  disabled?: boolean;
   icon?: string;
   onClick?: () => void;
 };
@@ -39,6 +40,7 @@ export function Button(props: ButtonProps) {
       type="button"
       className={classNameArray.join(" ")}
       onClick={props.onClick}
+      disabled={props.disabled}
     >
       {props.icon && renderIcon()}
       {props.label}

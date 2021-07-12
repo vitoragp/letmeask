@@ -2,7 +2,19 @@ import { RepositoryBase } from ".";
 import { Question } from "../models/Question";
 
 import { Room } from "../models/Room";
-import { database } from "../services/firebase";
+import { firebase, database } from "../services/firebase";
+
+function createQuestion(question: firebase.database.DataSnapshot): Question {
+  return {
+    id: question.key,
+    body: question.child("body").val(),
+    answered: question.child("answered").val(),
+    likes: question.child("likes").val(),
+    authorName: question.child("authorName").val(),
+    authorAvatar: question.child("authorAvatar").val(),
+    createdAt: question.child("createdAt").val(),
+  };
+}
 
 /***
  * RoomRepository
@@ -19,13 +31,7 @@ export class RoomRepository implements RepositoryBase<Room> {
             const questions: Question[] = [];
 
             response.child("questions").forEach((question) => {
-              questions.push({
-                id: question.key,
-                body: question.child("body").val(),
-                answered: question.child("answered").val(),
-                authorId: question.child("authorId").val(),
-                createdAt: question.child("createdAt").val(),
-              });
+              questions.push(createQuestion(question));
             });
 
             resolve({
@@ -55,13 +61,7 @@ export class RoomRepository implements RepositoryBase<Room> {
               const questions: Question[] = [];
 
               room.child("questions").forEach((question) => {
-                questions.push({
-                  id: question.key,
-                  body: question.child("body").val(),
-                  answered: question.child("answered").val(),
-                  authorId: question.child("authorId").val(),
-                  createdAt: question.child("createdAt").val(),
-                });
+                questions.push(createQuestion(question));
               });
 
               rooms.push({

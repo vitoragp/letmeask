@@ -8,6 +8,7 @@ import { NotificationContextProvider } from "../contexts/NotificationContext";
 import { Home } from "../pages/Home";
 import { RoomNew } from "../pages/RoomNew";
 import { RoomView } from "../pages/RoomView";
+import { RoomViewAdmin } from "../pages/RoomViewAdmin";
 
 import "./styles.scss";
 
@@ -23,8 +24,8 @@ export function App() {
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/room/new" component={RoomNew} />
-            <Route path="/room/:id" children={<RoomView />} exact />
-            <Route path="/room/admin/:id" children={<RoomView admin />} exact />
+            <Route path="/room/:id" component={RoomView} exact />
+            <Route path="/room/admin/:id" component={RoomViewAdmin} exact />
           </Switch>
         </BrowserRouter>
       </NotificationContextProvider>

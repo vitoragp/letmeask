@@ -1,22 +1,19 @@
 import * as React from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import * as Res from "../../assets/Resources";
-import { Button } from "../../components/Button";
 import { Loading } from "../../components/Loading";
+import { QuestionList } from "../../components/QuestionList";
 import { RoomCode } from "../../components/RoomCode";
+import { useAuth } from "../../hooks/Auth";
 import { Room } from "../../models/Room";
 import { RoomRepository } from "../../repositories/RoomRepository";
 
+import * as Res from "../../assets/Resources";
+
 import "./styles.scss";
-
-/***
- * RoomViewProps
- */
-
-type RoomViewProps = {
-  admin?: boolean;
-};
+import { Button } from "../../components/Button";
+import { Question } from "../../models/Question";
+import { QuestionRepository } from "../../repositories/QuestionRepository";
 
 /***
  * RoomViewParams
@@ -30,12 +27,14 @@ type RoomViewParams = {
  * RoomView
  */
 
-export function RoomView(props: RoomViewProps) {
+export function RoomView() {
   const params = useParams<RoomViewParams>();
   const history = useHistory();
+  const auth = useAuth();
 
   const [loading, setLoading] = React.useState<boolean>(true);
   const [room, setRoom] = React.useState<Room>();
+  const [questionBody, setQuestionBody] = React.useState<string>("");
 
   React.useEffect(() => {
     if (params.id) {
@@ -54,11 +53,63 @@ export function RoomView(props: RoomViewProps) {
   }, [params.id]);
 
   /***
+   * handleLogout
+   */
+
+  function handleLogout() {
+    auth.signOut();
+  }
+
+  /***
+   * handleLogin
+   */
+
+  function handleLogin() {
+    auth.signWithGoogle();
+  }
+
+  /***
+   * handleSendQuestion
+   */
+
+  async function handleSendQuestion() {
+    if (questionBody.trim() === "") {
+      return;
+    }
+
+    const questionRepository = new QuestionRepository(params.id);
+    await questionRepository.create({
+      body: questionBody,
+      authorName: auth.user?.name,
+      authorAvatar: auth.user?.avatar,
+      createdAt: new Date(),
+      answered: false,
+      likes: 0,
+    });
+
+    const roomRepository = new RoomRepository();
+    roomRepository.get(params.id).then((roomData) => {
+      setRoom(roomData);
+      setQuestionBody("");
+    });
+  }
+
+  /***
+   * handleChangeQuestionBody
+   */
+
+  function handleChangeQuestionBody(
+    evt: React.ChangeEvent<HTMLTextAreaElement>
+  ) {
+    setQuestionBody(evt.target.value);
+  }
+
+  /***
    * renderQuestions
    */
 
   function renderQuestions() {
-    return <div></div>;
+    return <QuestionList data={room?.questions} roomCode={params.id} />;
   }
 
   /***
@@ -68,14 +119,11 @@ export function RoomView(props: RoomViewProps) {
   function renderEmpty() {
     return (
       <div className="empty-container">
-        <div>
-          <img src={Res.EmptyQuestionsSvg} />
-          <h1>Nenhuma pergunta por aqui...</h1>
-          <p>
-            Envie o código desta sala para seus amigos e <br /> comece a
-            responder perguntas!
-          </p>
-        </div>
+        <img src={Res.EmptyQuestionsSvg} />
+        <h1>Nenhuma pergunta por aqui...</h1>
+        <p>
+          Faça o seu login e seja a primeira pessoa a <br /> fazer uma pergunta!
+        </p>
       </div>
     );
   }
@@ -86,17 +134,52 @@ export function RoomView(props: RoomViewProps) {
         <img src={Res.LogoSvg} alt="Letmeask" />
         <div className="left-menu">
           <RoomCode code={params.id} />
-          {props.admin === true && (
-            <Button label="Encerrar sala" className="quaternary" />
+          {auth.user && (
+            <Button label="Sair" className="tertiary" onClick={handleLogout} />
           )}
         </div>
       </header>
 
       <section>
         <Loading state={loading}>
-          <h1>{room?.title}</h1>
           <div className="content">
-            {room?.questions.length ? renderQuestions() : renderEmpty()}
+            <h1>{room?.title}</h1>
+
+            <div className="message-form">
+              <div className="body">
+                <textarea
+                  onChange={handleChangeQuestionBody}
+                  value={questionBody}
+                ></textarea>
+              </div>
+              <div className="footer">
+                <div className="info">
+                  {!auth.user ? (
+                    <p>
+                      Para enviar uma pergunta,{" "}
+                      <a onClick={handleLogin}>faça seu login</a>.
+                    </p>
+                  ) : (
+                    <>
+                      <img src={auth.user?.avatar} />
+                      <p>{auth.user?.name}</p>
+                    </>
+                  )}
+                </div>
+                <div className="actions">
+                  <Button
+                    label="Enviar pergunta"
+                    className="primary"
+                    disabled={auth.user === null}
+                    onClick={handleSendQuestion}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="messages">
+              {room?.questions.length ? renderQuestions() : renderEmpty()}
+            </div>
           </div>
         </Loading>
       </section>

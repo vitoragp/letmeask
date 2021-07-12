@@ -35,7 +35,7 @@ type AuthContextProviderProps = {
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = React.useState<User>();
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userResponse) => {
       if (userResponse) {
         if (!userResponse.displayName || !userResponse.photoURL) {

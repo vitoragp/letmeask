@@ -2,12 +2,12 @@ import * as React from "react";
 
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { useHistory } from "react-router-dom";
+import { useAuth } from "../../hooks/Auth";
 
 import * as Res from "../../assets/Resources";
 
 import "./styles.scss";
-import { useHistory } from "react-router-dom";
-import { useAuth } from "../../hooks/Auth";
 
 /***
  * Home
@@ -63,7 +63,7 @@ export function Home() {
           <Button
             label="Crie sua sala com o Google"
             icon={Res.GoogleIconSvg}
-            className="tertiary fill"
+            className="quaternary fill"
             onClick={handleGoogleSignIn}
           />
 
