@@ -25,6 +25,7 @@ type QuestionProps = {
 
 export function Question(props: QuestionProps) {
   const auth = useAuth();
+  const [pending, setPending] = React.useState<boolean>(false);
   const [likeCount, setLikeCount] = React.useState<number>(
     props.data.likeCount
   );
@@ -47,9 +48,10 @@ export function Question(props: QuestionProps) {
      */
 
     async function handleLike() {
-      if (props.data.authorId === auth.user.id) {
+      if (props.data.authorId === auth.user.id || pending) {
         return;
       }
+      setPending(true);
 
       let updatedQuestion: QuestionModel;
       const questionRepository = new QuestionRepository(props.roomCode);
@@ -75,13 +77,18 @@ export function Question(props: QuestionProps) {
         });
       }
       setLikeCount(updatedQuestion.likeCount);
+      setPending(false);
     }
 
     return (
       <>
         <a
           onClick={handleLike}
-          className={props.data.authorId === auth.user?.id ? "disabled" : ""}
+          className={
+            !auth.user || props.data.authorId === auth.user?.id
+              ? "disabled"
+              : ""
+          }
         >
           <span>{likeCount > 0 && likeCount}</span>
           <img src={Res.LikeSvg} alt="" />
