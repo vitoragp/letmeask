@@ -9,10 +9,11 @@ function createQuestion(question: firebase.database.DataSnapshot): Question {
     id: question.key,
     body: question.child("body").val(),
     answered: question.child("answered").val(),
-    likes: question.child("likes").val(),
     authorName: question.child("authorName").val(),
     authorAvatar: question.child("authorAvatar").val(),
+    authorId: question.child("authorId").val(),
     createdAt: question.child("createdAt").val(),
+    likeCount: question.child("likeCount").val(),
   };
 }
 

@@ -82,9 +82,10 @@ export function RoomView() {
       body: questionBody,
       authorName: auth.user?.name,
       authorAvatar: auth.user?.avatar,
+      authorId: auth.user?.id,
       createdAt: new Date(),
       answered: false,
-      likes: 0,
+      likeCount: 0,
     });
 
     const roomRepository = new RoomRepository();
@@ -170,7 +171,9 @@ export function RoomView() {
                   <Button
                     label="Enviar pergunta"
                     className="primary"
-                    disabled={auth.user === null}
+                    disabled={
+                      auth.user === null || auth.user?.id === room?.authorId
+                    }
                     onClick={handleSendQuestion}
                   />
                 </div>

@@ -42,6 +42,10 @@
         &:hover {
           color: $purple;
         }
+
+        &.disabled {
+          cursor: not-allowed;
+        }
       }
     }
   }

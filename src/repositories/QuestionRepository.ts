@@ -26,9 +26,10 @@ export class QuestionRepository implements RepositoryBase<Question> {
               body: response.child("body").val(),
               authorAvatar: response.child("authorAvatar").val(),
               authorName: response.child("authorName").val(),
+              authorId: response.child("authorId").val(),
               createdAt: response.child("createdAt").val(),
               answered: response.child("answered").val(),
-              likes: response.child("likes").val(),
+              likeCount: response.child("likeCount").val(),
             });
           } else {
             resolve(null);
@@ -52,9 +53,10 @@ export class QuestionRepository implements RepositoryBase<Question> {
                 body: question.child("body").val(),
                 authorAvatar: question.child("authorAvatar").val(),
                 authorName: question.child("authorName").val(),
+                authorId: response.child("authorId").val(),
                 createdAt: question.child("createdAt").val(),
                 answered: question.child("answered").val(),
-                likes: question.child("likes").val(),
+                likeCount: question.child("likeCount").val(),
               });
             });
 
