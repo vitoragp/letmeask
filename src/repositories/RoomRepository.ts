@@ -89,11 +89,18 @@ export class RoomRepository implements RepositoryBase<Room> {
     });
   }
 
-  update(obj: Room): void {
-    database.ref("/rooms/" + obj.id).update(obj);
+  update(obj: Room): Promise<Room> {
+    return new Promise<Room>((resolve, reject) => {
+      database
+        .ref("/rooms/" + obj.id)
+        .update(obj)
+        .then(() => {
+          resolve(obj);
+        });
+    });
   }
 
-  delete(obj: Room): void {
-    database.ref("/rooms/" + obj.id).remove();
+  delete(obj: Room): Promise<void> {
+    return database.ref("/rooms/" + obj.id).remove();
   }
 }

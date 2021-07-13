@@ -9,7 +9,7 @@ export abstract class RepositoryBase<T> {
 
   abstract create(obj: T): Promise<T>;
 
-  abstract update(obj: T): void;
+  abstract update(obj: T): Promise<T>;
 
-  abstract delete(obj: T): void;
+  abstract delete(obj: T): Promise<void>;
 }

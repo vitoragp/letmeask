@@ -75,11 +75,18 @@ export class QuestionRepository implements RepositoryBase<Question> {
     });
   }
 
-  update(obj: Question): void {
-    database.ref(`/rooms/${this.__roomId}/questions/${obj.id}`).update(obj);
+  update(obj: Question): Promise<Question> {
+    return new Promise<Question>((resolve, reject) => {
+      database
+        .ref(`/rooms/${this.__roomId}/questions/${obj.id}`)
+        .update(obj)
+        .then(() => {
+          resolve(obj);
+        });
+    });
   }
 
-  delete(obj: Question): void {
-    database.ref(`/rooms/${this.__roomId}/questions/${obj.id}`).remove();
+  delete(obj: Question): Promise<void> {
+    return database.ref(`/rooms/${this.__roomId}/questions/${obj.id}`).remove();
   }
 }

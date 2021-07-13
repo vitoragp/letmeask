@@ -51,32 +51,30 @@ export function Question(props: QuestionProps) {
         return;
       }
 
+      let updatedQuestion: QuestionModel;
       const questionRepository = new QuestionRepository(props.roomCode);
       const likeRepository = new LikeRepository(props.roomCode, props.data.id);
       const likes = await likeRepository.getAll();
       const like = likes?.filter((like) => like.authorId === auth.user?.id);
 
       if (like?.length) {
-        likeRepository.delete(like[0]);
+        await likeRepository.delete(like[0]);
 
-        questionRepository.update({
+        updatedQuestion = await questionRepository.update({
           ...props.data,
           likeCount: props.data.likeCount - 1,
         });
-
-        setLikeCount(props.data.likeCount - 1);
       } else {
         await likeRepository.create({
           authorId: auth.user.id,
         });
 
-        questionRepository.update({
+        updatedQuestion = await questionRepository.update({
           ...props.data,
           likeCount: props.data.likeCount + 1,
         });
-
-        setLikeCount(props.data.likeCount + 1);
       }
+      setLikeCount(updatedQuestion.likeCount);
     }
 
     return (

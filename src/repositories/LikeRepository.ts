@@ -69,16 +69,21 @@ export class LikeRepository implements RepositoryBase<Like> {
     });
   }
 
-  update(obj: Like): void {
-    database
-      .ref(
-        `/rooms/${this.__roomId}/questions/${this.__questionId}/likes/${obj.id}`
-      )
-      .update(obj);
+  update(obj: Like): Promise<Like> {
+    return new Promise<Like>((resolve, reject) => {
+      database
+        .ref(
+          `/rooms/${this.__roomId}/questions/${this.__questionId}/likes/${obj.id}`
+        )
+        .update(obj)
+        .then(() => {
+          resolve(obj);
+        });
+    });
   }
 
-  delete(obj: Like): void {
-    database
+  delete(obj: Like): Promise<void> {
+    return database
       .ref(
         `/rooms/${this.__roomId}/questions/${this.__questionId}/likes/${obj.id}`
       )
