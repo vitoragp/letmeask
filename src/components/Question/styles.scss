@@ -30,10 +30,14 @@
     }
 
     > .actions {
+      display: flex;
+
       > a {
         display: flex;
         align-items: flex-end;
         cursor: pointer;
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
 
         span {
           margin-right: 0.25rem;

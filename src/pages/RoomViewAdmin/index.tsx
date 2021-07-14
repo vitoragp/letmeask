@@ -27,6 +27,9 @@ export function RoomViewAdmin() {
   const params = useParams<RoomViewAdminParams>();
   const history = useHistory();
 
+  const closeRoomModalRef = React.useRef<HTMLDivElement>();
+  const deleteQuestionModalRef = React.useRef<HTMLDivElement>();
+
   const [loading, setLoading] = React.useState<boolean>(true);
   const [room, setRoom] = React.useState<Room>();
 
@@ -47,11 +50,39 @@ export function RoomViewAdmin() {
   }, [params.id]);
 
   /***
+   * handleCloseRoom
+   */
+
+  function handleCloseRoom() {
+    closeRoomModalRef.current.classList.add("show");
+  }
+
+  /***
+   * handleModalCancel
+   */
+
+  function handleModalCancel() {
+    closeRoomModalRef.current.classList.remove("show");
+  }
+
+  /***
+   * renderBadge
+   */
+
+  function renderBadge() {
+    return room?.questions?.length > 1 ? (
+      <span className="badge">{room?.questions?.length} perguntas</span>
+    ) : (
+      <span className="badge">{room?.questions?.length} pergunta</span>
+    );
+  }
+
+  /***
    * renderQuestions
    */
 
   function renderQuestions() {
-    return <QuestionList data={room.questions} />;
+    return <QuestionList data={room.questions} roomCode={params.id} admin />;
   }
 
   /***
@@ -74,23 +105,51 @@ export function RoomViewAdmin() {
   }
 
   return (
-    <div className="room-view-admin__page">
-      <header>
-        <img src={Res.LogoSvg} alt="Letmeask" />
-        <div className="left-menu">
-          <RoomCode code={params.id} />
-          <Button label="Encerrar sala" className="tertiary" />
-        </div>
-      </header>
-
-      <section>
-        <Loading state={loading}>
-          <h1>{room?.title}</h1>
-          <div className="content">
-            {room?.questions.length ? renderQuestions() : renderEmpty()}
+    <>
+      <div className="modal" ref={closeRoomModalRef}>
+        <div className="form">
+          <img src={Res.InfoSvg} />
+          <h1>Encerrar sala</h1>
+          <p>Tem certeza que você deseja encerrar esta sala?</p>
+          <div>
+            <Button
+              label="Cancelar"
+              className="secondary"
+              onClick={handleModalCancel}
+            />
+            <Button label="Sim, encerrar" className="quaternary" />
           </div>
-        </Loading>
-      </section>
-    </div>
+        </div>
+      </div>
+
+      <div className="modal" ref={deleteQuestionModalRef}>
+        <div className="form"></div>
+      </div>
+
+      <div className="room-view-admin__page">
+        <header>
+          <img src={Res.LogoSvg} alt="Letmeask" />
+          <div className="left-menu">
+            <RoomCode code={params.id} />
+            <Button
+              label="Encerrar sala"
+              className="tertiary"
+              onClick={handleCloseRoom}
+            />
+          </div>
+        </header>
+
+        <section>
+          <Loading state={loading}>
+            <h1>
+              {room?.title} {room?.questions?.length > 0 && renderBadge()}
+            </h1>
+            <div className="content">
+              {room?.questions.length ? renderQuestions() : renderEmpty()}
+            </div>
+          </Loading>
+        </section>
+      </div>
+    </>
   );
 }

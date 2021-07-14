@@ -10,10 +10,10 @@ import { RoomRepository } from "../../repositories/RoomRepository";
 
 import * as Res from "../../assets/Resources";
 
-import "./styles.scss";
 import { Button } from "../../components/Button";
-import { Question } from "../../models/Question";
 import { QuestionRepository } from "../../repositories/QuestionRepository";
+
+import "./styles.scss";
 
 /***
  * RoomViewParams
@@ -106,6 +106,18 @@ export function RoomView() {
   }
 
   /***
+   * renderBadge
+   */
+
+  function renderBadge() {
+    return room?.questions?.length > 1 ? (
+      <span className="badge">{room?.questions?.length} perguntas</span>
+    ) : (
+      <span className="badge">{room?.questions?.length} pergunta</span>
+    );
+  }
+
+  /***
    * renderQuestions
    */
 
@@ -144,7 +156,9 @@ export function RoomView() {
       <section>
         <Loading state={loading}>
           <div className="content">
-            <h1>{room?.title}</h1>
+            <h1>
+              {room?.title} {room?.questions?.length > 0 && renderBadge()}
+            </h1>
 
             <div className="message-form">
               <div className="body">
@@ -171,9 +185,7 @@ export function RoomView() {
                   <Button
                     label="Enviar pergunta"
                     className="primary"
-                    disabled={
-                      auth.user === null || auth.user?.id === room?.authorId
-                    }
+                    disabled={!auth.user || auth.user?.id === room?.authorId}
                     onClick={handleSendQuestion}
                   />
                 </div>

@@ -7,8 +7,9 @@ import * as Res from "../../assets/Resources";
 import { LikeRepository } from "../../repositories/LikeRepository";
 import { useAuth } from "../../hooks/Auth";
 
-import "./styles.scss";
 import { QuestionRepository } from "../../repositories/QuestionRepository";
+
+import "./styles.scss";
 
 /***
  * QuestionProps
@@ -35,7 +36,27 @@ export function Question(props: QuestionProps) {
    */
 
   function renderAdminToolbar() {
-    return <></>;
+    /***
+     * handleAnwser
+     */
+
+    function handleAnwser() {}
+
+    return (
+      <>
+        <a>
+          <img src={Res.CheckSvg} alt="" />
+        </a>
+
+        <a onClick={handleAnwser}>
+          <img src={Res.AnswerSvg} alt="" />
+        </a>
+
+        <a>
+          <img src={Res.DeleteSvg} alt="" />
+        </a>
+      </>
+    );
   }
 
   /***
@@ -64,7 +85,7 @@ export function Question(props: QuestionProps) {
 
         updatedQuestion = await questionRepository.update({
           ...props.data,
-          likeCount: props.data.likeCount - 1,
+          likeCount: likeCount - 1,
         });
       } else {
         await likeRepository.create({
@@ -73,7 +94,7 @@ export function Question(props: QuestionProps) {
 
         updatedQuestion = await questionRepository.update({
           ...props.data,
-          likeCount: props.data.likeCount + 1,
+          likeCount: likeCount + 1,
         });
       }
       setLikeCount(updatedQuestion.likeCount);

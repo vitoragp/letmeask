@@ -31,8 +31,20 @@
     flex: 1;
 
     > .content > h1 {
+      display: flex;
       margin-top: 4rem;
       margin-bottom: 2rem;
+      align-items: center;
+    }
+
+    > .content > h1 > .badge {
+      background-color: $pink;
+      color: $white;
+      font-size: 12px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      font-weight: normal;
     }
 
     > .content > .message-form {
