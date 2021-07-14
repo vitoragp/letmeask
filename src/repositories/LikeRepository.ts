@@ -70,12 +70,17 @@ export class LikeRepository implements RepositoryBase<Like> {
   }
 
   update(obj: Like): Promise<Like> {
+    const newObject = Object.assign({}, obj);
+
+    // Remove chaves desnecessarias.
+    delete newObject.id;
+
     return new Promise<Like>((resolve, reject) => {
       database
         .ref(
           `/rooms/${this.__roomId}/questions/${this.__questionId}/likes/${obj.id}`
         )
-        .update(obj)
+        .update(newObject)
         .then(() => {
           resolve(obj);
         });

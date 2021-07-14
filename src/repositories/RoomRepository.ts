@@ -1,10 +1,20 @@
 import { RepositoryBase } from ".";
+import { Like } from "../models/Like";
 import { Question } from "../models/Question";
 
 import { Room } from "../models/Room";
 import { firebase, database } from "../services/firebase";
 
 function createQuestion(question: firebase.database.DataSnapshot): Question {
+  const likes: Like[] = [];
+
+  question.child("likes").forEach((like) => {
+    likes.push({
+      id: like.key,
+      authorId: like.child("authorId").val(),
+    });
+  });
+
   return {
     id: question.key,
     body: question.child("body").val(),
@@ -14,6 +24,7 @@ function createQuestion(question: firebase.database.DataSnapshot): Question {
     authorId: question.child("authorId").val(),
     createdAt: question.child("createdAt").val(),
     likeCount: question.child("likeCount").val(),
+    likes,
   };
 }
 
@@ -83,17 +94,28 @@ export class RoomRepository implements RepositoryBase<Room> {
   }
 
   create(obj: Room): Promise<Room> {
+    const newObject = Object.assign({}, obj);
+
+    // Remove chaves desnecessarias.
+    delete newObject.questions;
+
     return new Promise<Room>((resolve) => {
-      const room = database.ref("/rooms").push(obj);
+      const room = database.ref("/rooms").push(newObject);
       resolve({ ...obj, id: room.key });
     });
   }
 
   update(obj: Room): Promise<Room> {
+    const newObject = Object.assign({}, obj);
+
+    // Remove chaves desnecessarias.
+    delete newObject.id;
+    delete newObject.questions;
+
     return new Promise<Room>((resolve, reject) => {
       database
         .ref("/rooms/" + obj.id)
-        .update(obj)
+        .update(newObject)
         .then(() => {
           resolve(obj);
         });

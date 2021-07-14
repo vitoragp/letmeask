@@ -2,6 +2,8 @@
  * Question
  */
 
+import { Like } from "./Like";
+
 export type Question = {
   id?: string;
   body: string;
@@ -11,4 +13,5 @@ export type Question = {
   createdAt: Date;
   answered: boolean;
   likeCount: number;
+  likes: Like[];
 };

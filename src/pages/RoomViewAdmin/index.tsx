@@ -50,10 +50,10 @@ export function RoomViewAdmin() {
   }, [params.id]);
 
   /***
-   * handleCloseRoom
+   * handleCloseRoomModal
    */
 
-  function handleCloseRoom() {
+  function handleCloseRoomModal() {
     closeRoomModalRef.current.classList.add("show");
   }
 
@@ -63,6 +63,16 @@ export function RoomViewAdmin() {
 
   function handleModalCancel() {
     closeRoomModalRef.current.classList.remove("show");
+  }
+
+  /***
+   * handleCloseRoom
+   */
+
+  async function handleCloseRoom() {
+    const repository = new RoomRepository();
+    await repository.update({ ...room, active: false });
+    history.replace("/");
   }
 
   /***
@@ -117,7 +127,12 @@ export function RoomViewAdmin() {
               className="secondary"
               onClick={handleModalCancel}
             />
-            <Button label="Sim, encerrar" className="quaternary" />
+
+            <Button
+              label="Sim, encerrar"
+              className="quaternary"
+              onClick={handleCloseRoom}
+            />
           </div>
         </div>
       </div>
@@ -134,7 +149,7 @@ export function RoomViewAdmin() {
             <Button
               label="Encerrar sala"
               className="tertiary"
-              onClick={handleCloseRoom}
+              onClick={handleCloseRoomModal}
             />
           </div>
         </header>
