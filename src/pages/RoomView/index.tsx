@@ -14,6 +14,7 @@ import { Button } from "../../components/Button";
 import { QuestionRepository } from "../../repositories/QuestionRepository";
 
 import "./styles.scss";
+import { Badge } from "./components/Badge";
 
 /***
  * RoomViewParams
@@ -106,18 +107,6 @@ export function RoomView() {
   }
 
   /***
-   * renderBadge
-   */
-
-  function renderBadge() {
-    return room?.questions?.length > 1 ? (
-      <span className="badge">{room?.questions?.length} perguntas</span>
-    ) : (
-      <span className="badge">{room?.questions?.length} pergunta</span>
-    );
-  }
-
-  /***
    * renderQuestions
    */
 
@@ -157,7 +146,7 @@ export function RoomView() {
         <Loading state={loading}>
           <div className="content">
             <h1>
-              {room?.title} {room?.questions?.length > 0 && renderBadge()}
+              {room?.title} <Badge questionCount={room?.questions?.length} />
             </h1>
 
             <div className="message-form">

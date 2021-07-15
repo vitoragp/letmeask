@@ -37,16 +37,6 @@
       align-items: center;
     }
 
-    > .content > h1 > .badge {
-      background-color: $pink;
-      color: $white;
-      font-size: 12px;
-      padding: 0.25rem 0.75rem;
-      border-radius: 1rem;
-      margin-left: 0.25rem;
-      font-weight: normal;
-    }
-
     > .content > .message-form {
       > .body > textarea {
         width: 100%;

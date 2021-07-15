@@ -1,0 +1,11 @@
+@import "../../../../constants/styles.scss";
+
+.badge__component {
+  background-color: $pink;
+  color: $white;
+  font-size: 12px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-left: 0.25rem;
+  font-weight: normal;
+}
