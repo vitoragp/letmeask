@@ -46,6 +46,11 @@
   &.disabled {
     cursor: not-allowed;
   }
+
+  &.answered {
+    background-color: $greyMedium;
+    border: 1px solid $black;
+  }
 }
 
 ///

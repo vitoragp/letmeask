@@ -20,6 +20,12 @@ type QuestionProps = {
  */
 
 function Question(props: QuestionProps) {
+  const classNames = ["question__component"];
+
+  if (props.data.answered) {
+    classNames.push("answered");
+  }
+
   /***
    * renderChild
    */
@@ -48,7 +54,7 @@ function Question(props: QuestionProps) {
 
   return (
     <QuestionContextProvider value={{ question: props.data }}>
-      <div className="question__component">
+      <div className={classNames.join(" ")}>
         <div className="body">
           <p>
             <strong>Pergunta:</strong>

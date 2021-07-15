@@ -28,9 +28,23 @@ export function QuestionList(props: QuestionListProps) {
     );
   }
 
+  /***
+   * sortQuestions
+   */
+
+  function sortQuestions(a: Question, b: Question) {
+    if (a.answered && !b.answered) {
+      return 1;
+    }
+    if (!a.answered && b.answered) {
+      return -1;
+    }
+    return 0;
+  }
+
   return (
     <div className="question-list__component">
-      {props.data.map(renderQuestion)}
+      {props.data.sort(sortQuestions).map(renderQuestion)}
     </div>
   );
 }

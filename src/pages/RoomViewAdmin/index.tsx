@@ -102,7 +102,13 @@ export function RoomViewAdmin() {
    */
 
   async function handleCheckAction(question: Question) {
-    // TODO: Implementar evento.
+    const questionRepository = new QuestionRepository(params.id);
+    questionRepository.update({ ...question, answered: !question.answered });
+
+    const roomRepository = new RoomRepository();
+    roomRepository.get(params.id).then((roomData) => {
+      setRoom(roomData);
+    });
   }
 
   /***
