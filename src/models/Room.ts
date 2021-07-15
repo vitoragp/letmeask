@@ -1,5 +1,9 @@
 import { Question } from "./Question";
 
+/***
+ * Room
+ */
+
 export interface Room {
   id?: string;
   title: string;
