@@ -1,5 +1,9 @@
 @import "../../constants/styles.scss";
 
+///
+/// Question
+///
+
 .question__component {
   display: flex;
   background-color: $white;
@@ -31,26 +35,30 @@
 
     > .actions {
       display: flex;
-
-      > a {
-        display: flex;
-        align-items: flex-end;
-        cursor: pointer;
-        margin-left: 0.25rem;
-        margin-right: 0.25rem;
-
-        span {
-          margin-right: 0.25rem;
-        }
-
-        &:hover {
-          color: $purple;
-        }
-
-        &.disabled {
-          cursor: not-allowed;
-        }
-      }
     }
+  }
+}
+
+///
+/// Action
+///
+
+.action__component {
+  display: flex;
+  align-items: flex-end;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+
+  span {
+    margin-right: 0.25rem;
+  }
+
+  &:hover {
+    color: $purple;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
   }
 }

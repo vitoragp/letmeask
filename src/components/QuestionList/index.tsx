@@ -11,6 +11,7 @@ type QuestionListProps = {
   data: Question[];
   admin?: boolean;
   roomCode: string;
+  children?: React.ReactNode;
 };
 
 /***
@@ -28,7 +29,9 @@ export function QuestionList(props: QuestionListProps) {
         admin={props.admin}
         roomCode={props.roomCode}
         key={question.id}
-      />
+      >
+        {props.children}
+      </QuestionComponent>
     );
   }
 

@@ -13,8 +13,12 @@ import * as Res from "../../assets/Resources";
 import { Button } from "../../components/Button";
 import { QuestionRepository } from "../../repositories/QuestionRepository";
 
-import "./styles.scss";
 import { Badge } from "./components/Badge";
+import { Action } from "../../components/Question";
+import { Question } from "../../models/Question";
+import { LikeRepository } from "../../repositories/LikeRepository";
+
+import "./styles.scss";
 
 /***
  * RoomViewParams
@@ -107,11 +111,61 @@ export function RoomView() {
   }
 
   /***
+   * handleLikeQuestion
+   */
+
+  async function handleLikeQuestion(question: Question) {
+    if (question.authorId === auth.user.id) {
+      return;
+    }
+
+    let updatedQuestion: Question;
+    const questionRepository = new QuestionRepository(params.id);
+    const likeRepository = new LikeRepository(params.id, question.id);
+    const likes = await likeRepository.getAll();
+    const like = likes?.filter((like) => like.authorId === auth.user?.id);
+
+    // Atualiza questao.
+    if (like?.length) {
+      await likeRepository.delete(like[0]);
+
+      updatedQuestion = await questionRepository.update({
+        ...question,
+        likeCount: question.likeCount - 1,
+      });
+    } else {
+      await likeRepository.create({
+        authorId: auth.user.id,
+      });
+
+      updatedQuestion = await questionRepository.update({
+        ...question,
+        likeCount: question.likeCount + 1,
+      });
+    }
+
+    // Atualiza interface
+    const repository = new RoomRepository();
+
+    repository.get(params.id).then((roomData) => {
+      setRoom(roomData);
+    });
+  }
+
+  /***
    * renderQuestions
    */
 
   function renderQuestions() {
-    return <QuestionList data={room?.questions} roomCode={params.id} />;
+    return (
+      <QuestionList data={room?.questions} roomCode={params.id}>
+        <Action
+          icon={Res.LikeSvg}
+          label={(q) => q.likeCount.toString()}
+          onClick={handleLikeQuestion}
+        />
+      </QuestionList>
+    );
   }
 
   /***
