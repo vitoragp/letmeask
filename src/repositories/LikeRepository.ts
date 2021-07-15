@@ -1,7 +1,7 @@
 import { RepositoryBase } from ".";
 import { Like } from "../models/Like";
 
-import { firebase, database } from "../services/firebase";
+import { database } from "../services/firebase";
 
 /***
  * LikeRepository
@@ -42,17 +42,17 @@ export class LikeRepository implements RepositoryBase<Like> {
         .ref(`/rooms/${this.__roomId}/questions/${this.__questionId}/likes`)
         .get()
         .then((response) => {
-          const questions: Like[] = [];
+          const likes: Like[] = [];
 
           if (response.exists()) {
-            response.forEach((question) => {
-              questions.push({
-                id: question.key,
-                authorId: question.child("authorId").val(),
+            response.forEach((like) => {
+              likes.push({
+                id: like.key,
+                authorId: like.child("authorId").val(),
               });
             });
 
-            resolve(questions);
+            resolve(likes);
           } else {
             resolve(null);
           }

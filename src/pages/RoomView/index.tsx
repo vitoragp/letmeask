@@ -48,6 +48,7 @@ export function RoomView() {
       repository.get(params.id).then((roomData) => {
         if (!roomData) {
           history.replace("/");
+          return;
         }
         setRoom(roomData);
         setLoading(false);
@@ -56,6 +57,12 @@ export function RoomView() {
       history.replace("/");
     }
   }, [params.id]);
+
+  React.useEffect(() => {
+    if (room && room?.authorId === auth.user?.id) {
+      history.replace("/room/admin/" + room?.id);
+    }
+  }, [auth.user, room]);
 
   /***
    * handleLogout
@@ -119,7 +126,6 @@ export function RoomView() {
       return;
     }
 
-    let updatedQuestion: Question;
     const questionRepository = new QuestionRepository(params.id);
     const likeRepository = new LikeRepository(params.id, question.id);
     const likes = await likeRepository.getAll();
@@ -129,7 +135,7 @@ export function RoomView() {
     if (like?.length) {
       await likeRepository.delete(like[0]);
 
-      updatedQuestion = await questionRepository.update({
+      await questionRepository.update({
         ...question,
         likeCount: question.likeCount - 1,
       });
@@ -138,7 +144,7 @@ export function RoomView() {
         authorId: auth.user.id,
       });
 
-      updatedQuestion = await questionRepository.update({
+      await questionRepository.update({
         ...question,
         likeCount: question.likeCount + 1,
       });

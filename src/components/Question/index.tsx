@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Question as QuestionModel } from "../../models/Question";
+import { ReplyList } from "../ReplyList";
 import { Action } from "./Action";
 import { QuestionContextProvider } from "./Context";
 
@@ -28,21 +29,26 @@ function Question(props: QuestionProps) {
   }
 
   return (
-    <div className="question__component">
-      <div className="body">{props.data.body}</div>
-      <div className="footer">
-        <div className="info">
-          <img src={props.data.authorAvatar} />
-          <p>{props.data.authorName}</p>
+    <QuestionContextProvider value={{ question: props.data }}>
+      <div className="question__component">
+        <div className="body">
+          <p>{props.data.body}</p>
+          <div className="replies">
+            <ReplyList data={props.data.replies} />
+          </div>
         </div>
+        <div className="footer">
+          <div className="info">
+            <img src={props.data.authorAvatar} />
+            <p>{props.data.authorName}</p>
+          </div>
 
-        <div className="actions">
-          <QuestionContextProvider value={{ question: props.data }}>
+          <div className="actions">
             {React.Children.map(props.children, renderChild)}
-          </QuestionContextProvider>
+          </div>
         </div>
       </div>
-    </div>
+    </QuestionContextProvider>
   );
 }
 

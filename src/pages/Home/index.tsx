@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/Auth";
 import * as Res from "../../assets/Resources";
 
 import "./styles.scss";
+import { RoomRepository } from "../../repositories/RoomRepository";
 
 /***
  * Home
@@ -32,8 +33,21 @@ export function Home() {
    * handleEnterRoom
    */
 
-  function handleEnterRoom() {
-    // TODO: Implementar entrar na sala.
+  async function handleEnterRoom() {
+    if (roomCode.trim() === "") {
+      return;
+    }
+
+    const roomRepository = new RoomRepository();
+    const room = await roomRepository.get(roomCode);
+
+    if (room) {
+      if (auth?.user?.id === room.authorId) {
+        history.push("/room/admin/" + room.id);
+      } else {
+        history.push("/room/" + room.id);
+      }
+    }
   }
 
   /***

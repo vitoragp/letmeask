@@ -3,6 +3,7 @@
  */
 
 import { Like } from "./Like";
+import { Reply } from "./Reply";
 
 export type Question = {
   id?: string;
@@ -14,4 +15,5 @@ export type Question = {
   answered: boolean;
   likeCount: number;
   likes?: Like[];
+  replies?: Reply[];
 };

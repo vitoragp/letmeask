@@ -1,17 +1,28 @@
 import { RepositoryBase } from ".";
 import { Like } from "../models/Like";
 import { Question } from "../models/Question";
+import { Reply } from "../models/Reply";
 
 import { Room } from "../models/Room";
 import { firebase, database } from "../services/firebase";
 
 function createQuestion(question: firebase.database.DataSnapshot): Question {
   const likes: Like[] = [];
+  const replies: Reply[] = [];
 
   question.child("likes").forEach((like) => {
     likes.push({
       id: like.key,
       authorId: like.child("authorId").val(),
+    });
+  });
+
+  question.child("replies").forEach((reply) => {
+    replies.push({
+      id: reply.key,
+      authorId: reply.child("authorId").val(),
+      authorName: reply.child("authorName").val(),
+      body: reply.child("body").val(),
     });
   });
 
@@ -25,6 +36,7 @@ function createQuestion(question: firebase.database.DataSnapshot): Question {
     createdAt: question.child("createdAt").val(),
     likeCount: question.child("likeCount").val(),
     likes,
+    replies,
   };
 }
 

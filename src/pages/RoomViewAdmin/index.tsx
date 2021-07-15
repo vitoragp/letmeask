@@ -11,9 +11,11 @@ import { Room } from "../../models/Room";
 import { RoomRepository } from "../../repositories/RoomRepository";
 import { Badge } from "../RoomView/components/Badge";
 import { Question } from "../../models/Question";
+import { QuestionRepository } from "../../repositories/QuestionRepository";
+import { ReplyRepository } from "../../repositories/ReplyRepository";
+import { useAuth } from "../../hooks/Auth";
 
 import "./styles.scss";
-import { QuestionRepository } from "../../repositories/QuestionRepository";
 
 /***
  * RoomViewParams
@@ -29,6 +31,7 @@ type RoomViewAdminParams = {
 
 export function RoomViewAdmin() {
   const params = useParams<RoomViewAdminParams>();
+  const auth = useAuth();
   const history = useHistory();
 
   const closeRoomModalRef = React.useRef<HTMLDivElement>();
@@ -43,11 +46,16 @@ export function RoomViewAdmin() {
 
   React.useEffect(() => {
     if (params.id) {
-      const repository = new RoomRepository();
+      if (!auth.user) {
+        history.replace("/room/" + params.id);
+        return;
+      }
 
+      const repository = new RoomRepository();
       repository.get(params.id).then((roomData) => {
         if (!roomData) {
           history.replace("/");
+          return;
         }
         setRoom(roomData);
         setLoading(false);
@@ -56,6 +64,12 @@ export function RoomViewAdmin() {
       history.replace("/");
     }
   }, [params.id]);
+
+  React.useEffect(() => {
+    if (room && room?.authorId !== auth.user?.id) {
+      history.replace("/room/" + room?.id);
+    }
+  }, [auth.user, room]);
 
   /***
    * EVENT: handleCloseRoomModal
@@ -147,6 +161,32 @@ export function RoomViewAdmin() {
   }
 
   /***
+   * EVENT: handleSendResponse
+   */
+
+  async function handleSendResponse() {
+    const replyRepository = new ReplyRepository(params.id, answerQuestion.id);
+    await replyRepository.create({
+      body: responseText,
+      authorId: auth.user?.id,
+      authorName: auth.user?.name,
+    });
+
+    setAnswerQuestion(undefined);
+    setResponseText("");
+
+    answerQuestionModalRef.current.classList.remove("show");
+  }
+
+  /***
+   * handleLogout
+   */
+
+  function handleLogout() {
+    auth.signOut();
+  }
+
+  /***
    * FUNCTION: renderQuestions
    */
 
@@ -190,7 +230,7 @@ export function RoomViewAdmin() {
           <p>
             <strong>Pergunta:</strong>
           </p>
-          <textarea readOnly>{answerQuestion.body}</textarea>
+          <textarea value={answerQuestion.body} readOnly></textarea>
           <p>Por: {answerQuestion.authorName}</p>
         </div>
 
@@ -212,7 +252,12 @@ export function RoomViewAdmin() {
             className="secondary"
             onClick={handleCloseAnswerModal}
           />
-          <Button label="Responder" className="primary" />
+
+          <Button
+            label="Responder"
+            className="primary"
+            onClick={handleSendResponse}
+          />
         </div>
       </>
     );
@@ -278,6 +323,7 @@ export function RoomViewAdmin() {
               className="tertiary"
               onClick={handleCloseRoomModal}
             />
+            <Button label="Sair" className="tertiary" onClick={handleLogout} />
           </div>
         </header>
 

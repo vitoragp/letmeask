@@ -133,6 +133,10 @@
     > .left-menu {
       display: flex;
       flex-direction: row;
+
+      > .button__component:not(:last-child) {
+        margin-right: 0.35rem;
+      }
     }
   }
 

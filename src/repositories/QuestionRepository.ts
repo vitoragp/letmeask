@@ -1,8 +1,9 @@
 import { RepositoryBase } from ".";
 import { Like } from "../models/Like";
 import { Question } from "../models/Question";
+import { Reply } from "../models/Reply";
 
-import { firebase, database } from "../services/firebase";
+import { database } from "../services/firebase";
 
 /***
  * QuestionRepository
@@ -23,11 +24,21 @@ export class QuestionRepository implements RepositoryBase<Question> {
         .then((response) => {
           if (response.exists()) {
             const likes: Like[] = [];
+            const replies: Reply[] = [];
 
             response.child("likes").forEach((like) => {
               likes.push({
                 id: like.key,
                 authorId: like.child("authorId").val(),
+              });
+            });
+
+            response.child("replies").forEach((reply) => {
+              replies.push({
+                id: reply.key,
+                authorId: reply.child("authorId").val(),
+                authorName: reply.child("authorName").val(),
+                body: reply.child("body").val(),
               });
             });
 
@@ -41,6 +52,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
               answered: response.child("answered").val(),
               likeCount: response.child("likeCount").val(),
               likes,
+              replies,
             });
           } else {
             resolve(null);
@@ -60,11 +72,21 @@ export class QuestionRepository implements RepositoryBase<Question> {
           if (response.exists()) {
             response.forEach((question) => {
               const likes: Like[] = [];
+              const replies: Reply[] = [];
 
               question.child("likes").forEach((like) => {
                 likes.push({
                   id: like.key,
                   authorId: like.child("authorId").val(),
+                });
+              });
+
+              question.child("replies").forEach((reply) => {
+                replies.push({
+                  id: reply.key,
+                  authorId: reply.child("authorId").val(),
+                  authorName: reply.child("authorName").val(),
+                  body: reply.child("body").val(),
                 });
               });
 
@@ -78,6 +100,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
                 answered: question.child("answered").val(),
                 likeCount: question.child("likeCount").val(),
                 likes,
+                replies,
               });
             });
 
@@ -94,6 +117,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
 
     // Remove chaves desnecessarias.
     delete newObject.likes;
+    delete newObject.replies;
 
     return new Promise<Question>((resolve) => {
       const room = database
@@ -109,6 +133,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
     // Remove chaves desnecessarias.
     delete newObject.id;
     delete newObject.likes;
+    delete newObject.replies;
 
     return new Promise<Question>((resolve, reject) => {
       database
