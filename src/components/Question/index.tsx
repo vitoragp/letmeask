@@ -28,14 +28,34 @@ function Question(props: QuestionProps) {
     return child.type === Action ? child : null;
   }
 
+  /***
+   * renderResponses
+   */
+
+  function renderResponses() {
+    return (
+      <>
+        <p>
+          <strong>Respostas:</strong>
+        </p>
+
+        <div className="replies">
+          <ReplyList data={props.data.replies} />
+        </div>
+      </>
+    );
+  }
+
   return (
     <QuestionContextProvider value={{ question: props.data }}>
       <div className="question__component">
         <div className="body">
-          <p>{props.data.body}</p>
-          <div className="replies">
-            <ReplyList data={props.data.replies} />
-          </div>
+          <p>
+            <strong>Pergunta:</strong>
+          </p>
+          <p className="answer">{props.data.body}</p>
+
+          {props.data.replies?.length > 0 && renderResponses()}
         </div>
         <div className="footer">
           <div className="info">

@@ -21,16 +21,21 @@ export function Reply(props: ReplyProps) {
   const classNames = ["reply__component"];
   const isAuth = context.question?.authorId === props.data.authorId;
 
-  console.log("render reply");
-
   if (isAuth) {
     classNames.push("owner");
   }
 
   return (
     <div className={classNames.join(" ")}>
-      <div>{props.data.authorName}, disse:</div>
-      <div className="body">{props.data.body}</div>
+      <div className="profile">
+        <img src={props.data.authorAvatar} />
+      </div>
+      <div>
+        <div>
+          <strong>{props.data.authorName}</strong>, disse:
+        </div>
+        <div className="body">{props.data.body}</div>
+      </div>
     </div>
   );
 }

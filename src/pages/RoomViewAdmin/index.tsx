@@ -170,10 +170,16 @@ export function RoomViewAdmin() {
       body: responseText,
       authorId: auth.user?.id,
       authorName: auth.user?.name,
+      authorAvatar: auth.user?.avatar,
     });
 
     setAnswerQuestion(undefined);
     setResponseText("");
+
+    const roomRepository = new RoomRepository();
+    roomRepository.get(params.id).then((roomData) => {
+      setRoom(roomData);
+    });
 
     answerQuestionModalRef.current.classList.remove("show");
   }

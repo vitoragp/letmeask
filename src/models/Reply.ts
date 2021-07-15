@@ -3,4 +3,5 @@ export class Reply {
   body: string;
   authorId: string;
   authorName: string;
+  authorAvatar: string;
 }

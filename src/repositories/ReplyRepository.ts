@@ -29,6 +29,7 @@ export class ReplyRepository implements RepositoryBase<Reply> {
               id: response.key,
               authorName: response.child("authorName").val(),
               authorId: response.child("authorId").val(),
+              authorAvatar: response.child("authorAvatar").val(),
               body: response.child("body").val(),
             });
           } else {
@@ -52,6 +53,7 @@ export class ReplyRepository implements RepositoryBase<Reply> {
                 id: reply.key,
                 authorName: reply.child("authorName").val(),
                 authorId: reply.child("authorId").val(),
+                authorAvatar: reply.child("authorAvatar").val(),
                 body: reply.child("body").val(),
               });
             });

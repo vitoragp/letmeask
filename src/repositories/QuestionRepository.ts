@@ -38,6 +38,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
                 id: reply.key,
                 authorId: reply.child("authorId").val(),
                 authorName: reply.child("authorName").val(),
+                authorAvatar: reply.child("authorAvatar").val(),
                 body: reply.child("body").val(),
               });
             });
@@ -86,6 +87,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
                   id: reply.key,
                   authorId: reply.child("authorId").val(),
                   authorName: reply.child("authorName").val(),
+                  authorAvatar: reply.child("authorAvatar").val(),
                   body: reply.child("body").val(),
                 });
               });
