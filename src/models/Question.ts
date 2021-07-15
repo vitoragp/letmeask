@@ -13,5 +13,5 @@ export type Question = {
   createdAt: Date;
   answered: boolean;
   likeCount: number;
-  likes: Like[];
+  likes?: Like[];
 };
