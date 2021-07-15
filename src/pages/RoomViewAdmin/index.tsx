@@ -13,6 +13,7 @@ import { Badge } from "../RoomView/components/Badge";
 import { Question } from "../../models/Question";
 
 import "./styles.scss";
+import { QuestionRepository } from "../../repositories/QuestionRepository";
 
 /***
  * RoomViewParams
@@ -35,6 +36,7 @@ export function RoomViewAdmin() {
   const answerQuestionModalRef = React.useRef<HTMLDivElement>();
 
   const [answerQuestion, setAnswerQuestion] = React.useState<Question>();
+  const [deleteQuestion, setDeleteQuestion] = React.useState<Question>();
   const [responseText, setResponseText] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(true);
   const [room, setRoom] = React.useState<Room>();
@@ -64,10 +66,10 @@ export function RoomViewAdmin() {
   }
 
   /***
-   * EVENT: handleModalCancel
+   * EVENT: handleCloseRoomModalCancel
    */
 
-  function handleModalCancel() {
+  function handleCloseRoomModalCancel() {
     closeRoomModalRef.current.classList.remove("show");
   }
 
@@ -85,7 +87,9 @@ export function RoomViewAdmin() {
    * EVENT: handleCheckAction
    */
 
-  async function handleCheckAction(question: Question) {}
+  async function handleCheckAction(question: Question) {
+    // TODO: Implementar evento.
+  }
 
   /***
    * EVENT: handleAnswerAction
@@ -111,7 +115,36 @@ export function RoomViewAdmin() {
    * EVENT: handleDeleteAction
    */
 
-  async function handleDeleteAction(question: Question) {}
+  async function handleDeleteAction(question: Question) {
+    setDeleteQuestion(question);
+    deleteQuestionModalRef.current.classList.add("show");
+  }
+
+  /***
+   * EVENT: handleDeleteModalCancel
+   */
+
+  function handleDeleteModalCancel() {
+    setDeleteQuestion(undefined);
+    deleteQuestionModalRef.current.classList.remove("show");
+  }
+
+  /***
+   * EVENT: handleDeleteQuestion
+   */
+
+  async function handleDeleteQuestion() {
+    const questionRepository = new QuestionRepository(params.id);
+    await questionRepository.delete(deleteQuestion);
+
+    const roomRepository = new RoomRepository();
+    roomRepository.get(params.id).then((roomData) => {
+      setRoom(roomData);
+      setDeleteQuestion(undefined);
+    });
+
+    deleteQuestionModalRef.current.classList.remove("show");
+  }
 
   /***
    * FUNCTION: renderQuestions
@@ -196,7 +229,7 @@ export function RoomViewAdmin() {
             <Button
               label="Cancelar"
               className="secondary"
-              onClick={handleModalCancel}
+              onClick={handleCloseRoomModalCancel}
             />
 
             <Button
@@ -209,7 +242,24 @@ export function RoomViewAdmin() {
       </div>
 
       <div className="modal" ref={deleteQuestionModalRef}>
-        <div className="form"></div>
+        <div className="form">
+          <img src={Res.InfoSvg} />
+          <h1>Deletar pergunta</h1>
+          <p>Tem certeza que você deseja deletar esta pergunta?</p>
+          <div>
+            <Button
+              label="Cancelar"
+              className="secondary"
+              onClick={handleDeleteModalCancel}
+            />
+
+            <Button
+              label="Sim, encerrar"
+              className="quaternary"
+              onClick={handleDeleteQuestion}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="modal" ref={answerQuestionModalRef}>

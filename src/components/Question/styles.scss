@@ -37,6 +37,10 @@
       display: flex;
     }
   }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
 }
 
 ///

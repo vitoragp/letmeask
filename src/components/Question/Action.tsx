@@ -11,6 +11,7 @@ import "./styles.scss";
 type ActionProps = {
   icon: string;
   label?: ((q: Question) => string) | string;
+  disabled?: ((q: Question) => boolean) | boolean;
   onClick?: (q: Question) => void;
 };
 
@@ -19,6 +20,7 @@ type ActionProps = {
  */
 
 export function Action(props: ActionProps) {
+  const classNames: string[] = ["action__component"];
   const { icon, label, onClick } = props;
   const [pending, setPending] = React.useState<boolean>(false);
   const context = React.useContext(QuestionContext);
@@ -47,8 +49,26 @@ export function Action(props: ActionProps) {
     );
   }
 
+  // Verifica se o botao esta desabilitado.
+  switch (typeof props.disabled) {
+    case "function":
+      if (props.disabled?.(context.question) === true) {
+        classNames.push("disabled");
+      }
+      break;
+
+    case "boolean":
+      if (props.disabled === true) {
+        classNames.push("disabled");
+      }
+      break;
+
+    default:
+      break;
+  }
+
   return (
-    <div className="action__component" onClick={handleClick}>
+    <div className={classNames.join(" ")} onClick={handleClick}>
       {label && renderLabel()} <img src={icon} />
     </div>
   );

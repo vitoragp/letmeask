@@ -21,6 +21,7 @@
     border-radius: 0.5rem;
     justify-content: center;
     flex-direction: column;
+    animation: form-answer-create-anim 0.25s ease-in-out;
 
     > img {
       width: 4rem;

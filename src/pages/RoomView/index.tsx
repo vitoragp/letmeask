@@ -158,11 +158,12 @@ export function RoomView() {
 
   function renderQuestions() {
     return (
-      <QuestionList data={room?.questions} roomCode={params.id}>
+      <QuestionList data={room?.questions}>
         <Action
           icon={Res.LikeSvg}
           label={(q) => q.likeCount.toString()}
           onClick={handleLikeQuestion}
+          disabled={(q) => q.authorId === auth.user?.id}
         />
       </QuestionList>
     );
