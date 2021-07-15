@@ -11,8 +11,6 @@ import "./styles.scss";
  */
 type QuestionProps = {
   data: QuestionModel;
-  admin?: boolean;
-  roomCode: string;
   children?: React.ReactNode;
 };
 
@@ -21,6 +19,14 @@ type QuestionProps = {
  */
 
 function Question(props: QuestionProps) {
+  /***
+   * renderChild
+   */
+
+  function renderChild(child: React.ReactElement) {
+    return child.type === Action ? child : null;
+  }
+
   return (
     <div className="question__component">
       <div className="body">{props.data.body}</div>
@@ -32,7 +38,7 @@ function Question(props: QuestionProps) {
 
         <div className="actions">
           <QuestionContextProvider value={{ question: props.data }}>
-            {props.children}
+            {React.Children.map(props.children, renderChild)}
           </QuestionContextProvider>
         </div>
       </div>

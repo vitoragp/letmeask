@@ -4,10 +4,13 @@ import { useHistory, useParams } from "react-router-dom";
 import * as Res from "../../assets/Resources";
 import { Button } from "../../components/Button";
 import { Loading } from "../../components/Loading";
+import { Action } from "../../components/Question";
 import { QuestionList } from "../../components/QuestionList";
 import { RoomCode } from "../../components/RoomCode";
 import { Room } from "../../models/Room";
 import { RoomRepository } from "../../repositories/RoomRepository";
+import { Badge } from "../RoomView/components/Badge";
+import { Question } from "../../models/Question";
 
 import "./styles.scss";
 
@@ -29,7 +32,10 @@ export function RoomViewAdmin() {
 
   const closeRoomModalRef = React.useRef<HTMLDivElement>();
   const deleteQuestionModalRef = React.useRef<HTMLDivElement>();
+  const answerQuestionModalRef = React.useRef<HTMLDivElement>();
 
+  const [answerQuestion, setAnswerQuestion] = React.useState<Question>();
+  const [responseText, setResponseText] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(true);
   const [room, setRoom] = React.useState<Room>();
 
@@ -50,7 +56,7 @@ export function RoomViewAdmin() {
   }, [params.id]);
 
   /***
-   * handleCloseRoomModal
+   * EVENT: handleCloseRoomModal
    */
 
   function handleCloseRoomModal() {
@@ -58,7 +64,7 @@ export function RoomViewAdmin() {
   }
 
   /***
-   * handleModalCancel
+   * EVENT: handleModalCancel
    */
 
   function handleModalCancel() {
@@ -66,7 +72,7 @@ export function RoomViewAdmin() {
   }
 
   /***
-   * handleCloseRoom
+   * EVENT: handleCloseRoom
    */
 
   async function handleCloseRoom() {
@@ -76,27 +82,53 @@ export function RoomViewAdmin() {
   }
 
   /***
-   * renderBadge
+   * EVENT: handleCheckAction
    */
 
-  function renderBadge() {
-    return room?.questions?.length > 1 ? (
-      <span className="badge">{room?.questions?.length} perguntas</span>
-    ) : (
-      <span className="badge">{room?.questions?.length} pergunta</span>
+  async function handleCheckAction(question: Question) {}
+
+  /***
+   * EVENT: handleAnswerAction
+   */
+
+  async function handleAnswerAction(question: Question) {
+    setAnswerQuestion(question);
+    setResponseText("");
+    answerQuestionModalRef.current.classList.add("show");
+  }
+
+  /***
+   * handleCloseAnswerModal
+   */
+
+  function handleCloseAnswerModal() {
+    setAnswerQuestion(undefined);
+    setResponseText("");
+    answerQuestionModalRef.current.classList.remove("show");
+  }
+
+  /***
+   * EVENT: handleDeleteAction
+   */
+
+  async function handleDeleteAction(question: Question) {}
+
+  /***
+   * FUNCTION: renderQuestions
+   */
+
+  function renderQuestions() {
+    return (
+      <QuestionList data={room.questions}>
+        <Action icon={Res.CheckSvg} onClick={handleCheckAction} />
+        <Action icon={Res.AnswerSvg} onClick={handleAnswerAction} />
+        <Action icon={Res.DeleteSvg} onClick={handleDeleteAction} />
+      </QuestionList>
     );
   }
 
   /***
-   * renderQuestions
-   */
-
-  function renderQuestions() {
-    return <QuestionList data={room.questions} roomCode={params.id} admin />;
-  }
-
-  /***
-   * renderEmpty
+   * FUNCTION: renderEmpty
    */
 
   function renderEmpty() {
@@ -111,6 +143,45 @@ export function RoomViewAdmin() {
           </p>
         </div>
       </div>
+    );
+  }
+
+  /***
+   * FUNCTION: renderAnswerQuestionForm
+   */
+
+  function renderAnswerQuestionForm() {
+    return (
+      <>
+        <div className="answer">
+          <p>
+            <strong>Pergunta:</strong>
+          </p>
+          <textarea readOnly>{answerQuestion.body}</textarea>
+          <p>Por: {answerQuestion.authorName}</p>
+        </div>
+
+        <hr />
+
+        <div className="response">
+          <p>
+            <strong>Resposta:</strong>
+          </p>
+          <textarea
+            value={responseText}
+            onChange={(evt) => setResponseText(evt.target.value)}
+          ></textarea>
+        </div>
+
+        <div className="button-container">
+          <Button
+            label="Cancelar"
+            className="secondary"
+            onClick={handleCloseAnswerModal}
+          />
+          <Button label="Responder" className="primary" />
+        </div>
+      </>
     );
   }
 
@@ -141,6 +212,12 @@ export function RoomViewAdmin() {
         <div className="form"></div>
       </div>
 
+      <div className="modal" ref={answerQuestionModalRef}>
+        <div className="form-answer">
+          {answerQuestion && renderAnswerQuestionForm()}
+        </div>
+      </div>
+
       <div className="room-view-admin__page">
         <header>
           <img src={Res.LogoSvg} alt="Letmeask" />
@@ -157,7 +234,7 @@ export function RoomViewAdmin() {
         <section>
           <Loading state={loading}>
             <h1>
-              {room?.title} {room?.questions?.length > 0 && renderBadge()}
+              {room?.title} <Badge questionCount={room?.questions.length} />
             </h1>
             <div className="content">
               {room?.questions.length ? renderQuestions() : renderEmpty()}

@@ -9,8 +9,6 @@ import { Question as QuestionComponent } from "../Question";
 
 type QuestionListProps = {
   data: Question[];
-  admin?: boolean;
-  roomCode: string;
   children?: React.ReactNode;
 };
 
@@ -24,12 +22,7 @@ export function QuestionList(props: QuestionListProps) {
    */
   function renderQuestion(question: Question) {
     return (
-      <QuestionComponent
-        data={question}
-        admin={props.admin}
-        roomCode={props.roomCode}
-        key={question.id}
-      >
+      <QuestionComponent data={question} key={question.id}>
         {props.children}
       </QuestionComponent>
     );
