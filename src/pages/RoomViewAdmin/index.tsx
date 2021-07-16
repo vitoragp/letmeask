@@ -53,7 +53,7 @@ export function RoomViewAdmin() {
 
       const repository = new RoomRepository();
       repository.get(params.id).then((roomData) => {
-        if (!roomData) {
+        if (!roomData || !roomData.active) {
           history.replace("/");
           return;
         }

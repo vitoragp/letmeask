@@ -6,11 +6,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { useAuth } from "../../hooks/Auth";
 
-import { Room } from "../../models/Room";
-
 import { RoomRepository } from "../../repositories/RoomRepository";
-
-import { AuthPage } from "../AuthPage";
 
 import "./styles.scss";
 
@@ -44,7 +40,7 @@ function RoomNewPage() {
 
     const room = await repository.create({
       title: roomName,
-      active: false,
+      active: true,
       authorId: auth.user?.id,
     });
 
