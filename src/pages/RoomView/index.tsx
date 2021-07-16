@@ -37,7 +37,6 @@ export function RoomView() {
   const history = useHistory();
   const auth = useAuth();
 
-  const [loading, setLoading] = React.useState<boolean>(true);
   const [room, setRoom] = React.useState<Room>();
   const [questionBody, setQuestionBody] = React.useState<string>("");
 
@@ -51,7 +50,6 @@ export function RoomView() {
           return;
         }
         setRoom(roomData);
-        setLoading(false);
       });
     } else {
       history.replace("/");
@@ -59,10 +57,10 @@ export function RoomView() {
   }, [params.id]);
 
   React.useEffect(() => {
-    if (room && room?.authorId === auth.user?.id) {
+    if (auth.ready && room && room?.authorId === auth.user?.id) {
       history.replace("/room/admin/" + room?.id);
     }
-  }, [auth.user, room]);
+  }, [auth.ready, auth.user, room]);
 
   /***
    * handleLogout
@@ -204,7 +202,7 @@ export function RoomView() {
       </header>
 
       <section>
-        <Loading state={loading}>
+        <Loading state={room === undefined}>
           <div className="content">
             <h1>
               {room?.title} <Badge questionCount={room?.questions?.length} />

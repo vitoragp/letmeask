@@ -10,6 +10,7 @@ import { User } from "../../models/User";
 
 type AuthContextType = {
   user: User | undefined;
+  ready: boolean;
   signWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -34,8 +35,9 @@ type AuthContextProviderProps = {
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = React.useState<User>();
+  const [ready, setReady] = React.useState<boolean>(false);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userResponse) => {
       if (userResponse) {
         if (!userResponse.displayName || !userResponse.photoURL) {
@@ -48,6 +50,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
           avatar: userResponse.photoURL,
         });
       }
+      setReady(true);
 
       return () => {
         unsubscribe();
@@ -85,7 +88,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, ready, signWithGoogle, signOut }}>
       {props.children}
     </AuthContext.Provider>
   );

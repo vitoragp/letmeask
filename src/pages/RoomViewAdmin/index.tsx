@@ -41,12 +41,12 @@ export function RoomViewAdmin() {
   const [answerQuestion, setAnswerQuestion] = React.useState<Question>();
   const [deleteQuestion, setDeleteQuestion] = React.useState<Question>();
   const [responseText, setResponseText] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(true);
   const [room, setRoom] = React.useState<Room>();
 
   React.useEffect(() => {
     if (params.id) {
-      if (!auth.user) {
+      if (auth.ready && !auth.user) {
+        console.log("CHECK");
         history.replace("/room/" + params.id);
         return;
       }
@@ -58,7 +58,6 @@ export function RoomViewAdmin() {
           return;
         }
         setRoom(roomData);
-        setLoading(false);
       });
     } else {
       history.replace("/");
@@ -66,7 +65,7 @@ export function RoomViewAdmin() {
   }, [params.id]);
 
   React.useEffect(() => {
-    if (room && room?.authorId !== auth.user?.id) {
+    if (room !== undefined && room?.authorId !== auth.user?.id) {
       history.replace("/room/" + room?.id);
     }
   }, [auth.user, room]);
@@ -340,7 +339,7 @@ export function RoomViewAdmin() {
         </header>
 
         <section>
-          <Loading state={loading}>
+          <Loading state={room === undefined}>
             <h1>
               {room?.title} <Badge questionCount={room?.questions.length} />
             </h1>
