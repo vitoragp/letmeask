@@ -17,7 +17,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
   }
 
   get(id: string): Promise<Question> {
-    return new Promise<Question>((resolve, reject) => {
+    return new Promise<Question>((resolve) => {
       database
         .ref(`/rooms/${this.__roomId}/questions/${id}`)
         .get()
@@ -63,7 +63,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
   }
 
   getAll(): Promise<Question[]> {
-    return new Promise<Question[]>((resolve, reject) => {
+    return new Promise<Question[]>((resolve) => {
       database
         .ref(`/rooms/${this.__roomId}/questions`)
         .get()
@@ -137,7 +137,7 @@ export class QuestionRepository implements RepositoryBase<Question> {
     delete newObject.likes;
     delete newObject.replies;
 
-    return new Promise<Question>((resolve, reject) => {
+    return new Promise<Question>((resolve) => {
       database
         .ref(`/rooms/${this.__roomId}/questions/${obj.id}`)
         .update(newObject)

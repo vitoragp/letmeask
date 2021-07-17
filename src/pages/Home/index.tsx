@@ -42,7 +42,7 @@ export function Home() {
     const room = await roomRepository.get(roomCode);
 
     if (room) {
-      if (auth?.user?.id === room.authorId) {
+      if (auth.user?.id === room.authorId) {
         history.push("/room/admin/" + room.id);
       } else {
         history.push("/room/" + room.id);

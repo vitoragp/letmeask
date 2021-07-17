@@ -47,7 +47,7 @@ function createQuestion(question: firebase.database.DataSnapshot): Question {
 
 export class RoomRepository implements RepositoryBase<Room> {
   get(id: string): Promise<Room> {
-    return new Promise<Room>((resolve, reject) => {
+    return new Promise<Room>((resolve) => {
       database
         .ref("/rooms/" + id)
         .get()
@@ -74,7 +74,7 @@ export class RoomRepository implements RepositoryBase<Room> {
   }
 
   getAll(): Promise<Room[]> {
-    return new Promise<Room[]>((resolve, reject) => {
+    return new Promise<Room[]>((resolve) => {
       database
         .ref("/rooms")
         .get()
@@ -125,7 +125,7 @@ export class RoomRepository implements RepositoryBase<Room> {
     delete newObject.id;
     delete newObject.questions;
 
-    return new Promise<Room>((resolve, reject) => {
+    return new Promise<Room>((resolve) => {
       database
         .ref("/rooms/" + obj.id)
         .update(newObject)

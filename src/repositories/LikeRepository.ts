@@ -17,7 +17,7 @@ export class LikeRepository implements RepositoryBase<Like> {
   }
 
   get(id: string): Promise<Like> {
-    return new Promise<Like>((resolve, reject) => {
+    return new Promise<Like>((resolve) => {
       database
         .ref(
           `/rooms/${this.__roomId}/questions/${this.__questionId}/likes/${id}`
@@ -37,7 +37,7 @@ export class LikeRepository implements RepositoryBase<Like> {
   }
 
   getAll(): Promise<Like[]> {
-    return new Promise<Like[]>((resolve, reject) => {
+    return new Promise<Like[]>((resolve) => {
       database
         .ref(`/rooms/${this.__roomId}/questions/${this.__questionId}/likes`)
         .get()
@@ -75,7 +75,7 @@ export class LikeRepository implements RepositoryBase<Like> {
     // Remove chaves desnecessarias.
     delete newObject.id;
 
-    return new Promise<Like>((resolve, reject) => {
+    return new Promise<Like>((resolve) => {
       database
         .ref(
           `/rooms/${this.__roomId}/questions/${this.__questionId}/likes/${obj.id}`

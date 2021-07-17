@@ -46,7 +46,6 @@ export function RoomViewAdmin() {
   React.useEffect(() => {
     if (params.id) {
       if (auth.ready && !auth.user) {
-        console.log("CHECK");
         history.replace("/room/" + params.id);
         return;
       }

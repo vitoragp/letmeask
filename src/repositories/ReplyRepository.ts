@@ -17,7 +17,7 @@ export class ReplyRepository implements RepositoryBase<Reply> {
   }
 
   get(id: string): Promise<Reply> {
-    return new Promise<Reply>((resolve, reject) => {
+    return new Promise<Reply>((resolve) => {
       database
         .ref(
           `/rooms/${this.__roomId}/questions/${this.__questionId}/replies/${id}`
@@ -40,7 +40,7 @@ export class ReplyRepository implements RepositoryBase<Reply> {
   }
 
   getAll(): Promise<Reply[]> {
-    return new Promise<Reply[]>((resolve, reject) => {
+    return new Promise<Reply[]>((resolve) => {
       database
         .ref(`/rooms/${this.__roomId}/questions/${this.__questionId}/replies`)
         .get()
@@ -81,7 +81,7 @@ export class ReplyRepository implements RepositoryBase<Reply> {
     // Remove chaves desnecessarias.
     delete newObject.id;
 
-    return new Promise<Reply>((resolve, reject) => {
+    return new Promise<Reply>((resolve) => {
       database
         .ref(
           `/rooms/${this.__roomId}/questions/${this.__questionId}/replies/${obj.id}`
